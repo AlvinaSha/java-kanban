@@ -1,6 +1,6 @@
-package taskTrecker.model;
+package taskTracker.model;
 
-import taskTrecker.enums.Status;
+import taskTracker.model.Status;
 
 public class Task {
     private String name;

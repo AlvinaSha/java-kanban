@@ -1,9 +1,9 @@
-package taskTrecker;
+package taskTracker;
 
-import taskTrecker.enums.Status;
-import taskTrecker.model.Epic;
-import taskTrecker.model.Subtask;
-import taskTrecker.model.Task;
+import taskTracker.model.Status;
+import taskTracker.model.Epic;
+import taskTracker.model.Subtask;
+import taskTracker.model.Task;
 
 import java.util.ArrayList;
 import java.util.HashMap;
