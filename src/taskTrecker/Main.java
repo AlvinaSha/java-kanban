@@ -1,3 +1,10 @@
+package taskTrecker;
+
+import taskTrecker.enums.Status;
+import taskTrecker.model.Epic;
+import taskTrecker.model.Subtask;
+import taskTrecker.model.Task;
+
 import java.util.List;
 import java.util.Scanner;
 

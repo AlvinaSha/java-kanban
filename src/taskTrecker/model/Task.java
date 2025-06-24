@@ -1,4 +1,8 @@
-class Task {
+package taskTrecker.model;
+
+import taskTrecker.enums.Status;
+
+public class Task {
     private String name;
     private String description;
     private int id;
