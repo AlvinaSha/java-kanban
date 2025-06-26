@@ -1,7 +1,5 @@
 package taskTracker.model;
 
-import taskTracker.model.Status;
-
 public class Task {
     private String name;
     private String description;

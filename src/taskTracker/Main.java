@@ -68,34 +68,41 @@ public class Main {
         // Создаем две задачи
         Task task1 = new Task("Покупки", "Купить продукты", 0);
         Task task2 = new Task("Уборка", "Убраться в квартире", 0);
-        int task1Id = taskManager.createTask(task1);
-        int task2Id = taskManager.createTask(task2);
+        Task createdTask1 = taskManager.createTask(task1);
+        Task createdTask2 = taskManager.createTask(task2);
+        int task1Id = createdTask1.getId();
+        int task2Id = createdTask2.getId();
 
         // Создаем эпик с двумя подзадачами
         Epic epic1 = new Epic("Переезд", "Организация переезда в новый офис", 0);
-        int epic1Id = taskManager.createEpic(epic1);
+        Epic createdEpic1 = taskManager.createEpic(epic1);
+        int epic1Id = createdEpic1.getId();
 
         Subtask subtask1 = new Subtask("Упаковка", "Упаковать вещи", 0, epic1Id);
         Subtask subtask2 = new Subtask("Транспорт", "Заказать грузовик", 0, epic1Id);
-        int subtask1Id = taskManager.createSubtask(subtask1);
-        int subtask2Id = taskManager.createSubtask(subtask2);
+        Subtask createdSubtask1 = taskManager.createSubtask(subtask1);
+        Subtask createdSubtask2 = taskManager.createSubtask(subtask2);
+        int subtask1Id = createdSubtask1.getId();
+        int subtask2Id = createdSubtask2.getId();
 
         // Создаем эпик с одной подзадачей
         Epic epic2 = new Epic("Ремонт", "Ремонт в квартире", 0);
-        int epic2Id = taskManager.createEpic(epic2);
+        Epic createdEpic2 = taskManager.createEpic(epic2);
+        int epic2Id = createdEpic2.getId();
 
         Subtask subtask3 = new Subtask("Покраска", "Покрасить стены", 0, epic2Id);
-        int subtask3Id = taskManager.createSubtask(subtask3);
+        Subtask createdSubtask3 = taskManager.createSubtask(subtask3);
+        int subtask3Id = createdSubtask3.getId();
 
         // Изменяем статусы
-        task1.setStatus(Status.DONE);
-        taskManager.updateTask(task1);
+        createdTask1.setStatus(Status.DONE);
+        taskManager.updateTask(createdTask1);
 
-        subtask1.setStatus(Status.IN_PROGRESS);
-        taskManager.updateSubtask(subtask1);
+        createdSubtask1.setStatus(Status.IN_PROGRESS);
+        taskManager.updateSubtask(createdSubtask1);
 
-        subtask3.setStatus(Status.DONE);
-        taskManager.updateSubtask(subtask3);
+        createdSubtask3.setStatus(Status.DONE);
+        taskManager.updateSubtask(createdSubtask3);
 
         // Выводим тестовые данные
         System.out.println("Тестовые данные созданы:");
@@ -137,8 +144,8 @@ public class Main {
         String description = scanner.nextLine();
 
         Task task = new Task(name, description, 0);
-        int id = taskManager.createTask(task);
-        System.out.println("Задача создана с ID: " + id);
+        Task createdTask = taskManager.createTask(task);
+        System.out.println("Задача создана с ID: " + createdTask.getId());
     }
 
     private static void createEpic() {
@@ -148,26 +155,28 @@ public class Main {
         String description = scanner.nextLine();
 
         Epic epic = new Epic(name, description, 0);
-        int id = taskManager.createEpic(epic);
-        System.out.println("Эпик создан с ID: " + id);
+        Epic createdEpic = taskManager.createEpic(epic);
+        System.out.println("Эпик создан с ID: " + createdEpic.getId());
     }
 
     private static void createSubtask() {
-        System.out.print("Введите ID эпика: ");
-        int epicId = scanner.nextInt();
-        scanner.nextLine();
+        try {
+            System.out.print("Введите ID эпика: ");
+            int epicId = scanner.nextInt();
+            scanner.nextLine();
 
-        System.out.print("Введите название подзадачи: ");
-        String name = scanner.nextLine();
-        System.out.print("Введите описание подзадачи: ");
-        String description = scanner.nextLine();
+            System.out.print("Введите название подзадачи: ");
+            String name = scanner.nextLine();
+            System.out.print("Введите описание подзадачи: ");
+            String description = scanner.nextLine();
 
-        Subtask subtask = new Subtask(name, description, 0, epicId);
-        int id = taskManager.createSubtask(subtask);
-        if (id == -1) {
-            System.out.println("Ошибка: эпик с ID " + epicId + " не существует");
-        } else {
-            System.out.println("Подзадача создана с ID: " + id);
+            Subtask subtask = new Subtask(name, description, 0, epicId);
+            Subtask createdSubtask = taskManager.createSubtask(subtask);
+            System.out.println("Подзадача создана с ID: " + createdSubtask.getId());
+        } catch (IllegalArgumentException e) {
+            System.out.println("Ошибка: " + e.getMessage());
+        } catch (Exception e) {
+            System.out.println("Произошла ошибка при создании подзадачи");
         }
     }
 
