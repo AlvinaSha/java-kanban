@@ -1,7 +1,8 @@
 package taskTracker;
 
-import taskTracker.model.Status;
+import taskTracker.manager.task.InMemoryTaskManager;
 import taskTracker.model.Epic;
+import taskTracker.model.Status;
 import taskTracker.model.Subtask;
 import taskTracker.model.Task;
 
@@ -10,7 +11,7 @@ import java.util.Scanner;
 
 public class Main {
     private static Scanner scanner = new Scanner(System.in);
-    private static TaskManager taskManager = new TaskManager();
+    private static InMemoryTaskManager taskManager = new InMemoryTaskManager();
 
     public static void main(String[] args) {
         testData();
@@ -54,6 +55,9 @@ public class Main {
                     break;
                 case 11:
                     printEpicSubtasks();
+                    break;
+                case 12:
+                    printHistory();
                     break;
                 case 0:
                     running = false;
@@ -133,6 +137,7 @@ public class Main {
         System.out.println("9. Удалить эпик");
         System.out.println("10. Удалить подзадачу");
         System.out.println("11. Показать подзадачи эпика");
+        System.out.println("12. Показать историю просмотров");
         System.out.println("0. Выход");
         System.out.print("Выберите команду: ");
     }
@@ -291,6 +296,18 @@ public class Main {
             System.out.println("\nПодзадачи эпика " + epicId + ":");
             for (Subtask subtask : subtasks) {
                 System.out.println(subtask);
+            }
+        }
+    }
+
+    private static void printHistory() {
+        List<Task> history = taskManager.getHistoryList();
+        System.out.println("\nИстория просмотров (последние 10 задач):");
+        if (history.isEmpty()) {
+            System.out.println("История пуста");
+        } else {
+            for (Task task : history) {
+                System.out.println(task);
             }
         }
     }
