@@ -1,5 +1,7 @@
 package taskTracker;
 
+import taskTracker.manager.history.HistoryManager;
+import taskTracker.manager.history.InMemoryHistoryManager;
 import taskTracker.manager.task.InMemoryTaskManager;
 import taskTracker.model.Epic;
 import taskTracker.model.Status;
@@ -11,7 +13,8 @@ import java.util.Scanner;
 
 public class Main {
     private static Scanner scanner = new Scanner(System.in);
-    private static InMemoryTaskManager taskManager = new InMemoryTaskManager();
+    private static HistoryManager historyManager = new InMemoryHistoryManager();
+    private static InMemoryTaskManager taskManager = new InMemoryTaskManager(historyManager);
 
     public static void main(String[] args) {
         testData();
@@ -301,7 +304,7 @@ public class Main {
     }
 
     private static void printHistory() {
-        List<Task> history = taskManager.getHistoryList();
+        List<Task> history = taskManager.getHistory();
         System.out.println("\nИстория просмотров (последние 10 задач):");
         if (history.isEmpty()) {
             System.out.println("История пуста");

@@ -13,6 +13,13 @@ public class Task {
         this.status = Status.NEW;
     }
 
+    public Task(Task task) {
+        this.name = task.getName();
+        this.description = task.getDescription();
+        this.id = task.getId();
+        this.status = task.getStatus();
+    }
+
     public String getName() {
         return name;
     }

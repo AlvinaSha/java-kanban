@@ -1,5 +1,6 @@
 package taskTracker.manager.task;
 
+import taskTracker.manager.history.HistoryManager;
 import taskTracker.manager.history.InMemoryHistoryManager;
 import taskTracker.model.Status;
 import taskTracker.model.Epic;
@@ -13,7 +14,15 @@ public class InMemoryTaskManager implements TaskManager {
     private Map<Integer, Epic> epics;
     private Map<Integer, Subtask> subtasks;
     private int nextId;
-    private final InMemoryHistoryManager historyManager;
+    private final HistoryManager historyManager;
+
+    public InMemoryTaskManager(HistoryManager historyManager) {
+        this.historyManager = historyManager;
+        this.tasks = new HashMap<>();
+        this.epics = new HashMap<>();
+        this.subtasks = new HashMap<>();
+        this.nextId = 1;
+    }
 
     public InMemoryTaskManager() {
         this.historyManager = new InMemoryHistoryManager();
@@ -26,8 +35,8 @@ public class InMemoryTaskManager implements TaskManager {
     private void addToHistory(Task task) {
         historyManager.add(task);
     }
-
-    public List<Task> getHistoryList() {
+    @Override
+    public List<Task> getHistory() {
         return historyManager.getHistory();
     }
 
@@ -207,17 +216,14 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public List<Subtask> getSubtasksByEpicId(int epicId) {
-        List<Subtask> result = new ArrayList<>();
         Epic epic = epics.get(epicId);
-        if (epic != null) {
-            for (int subtaskId : epic.getSubtaskIds()) {
-                Subtask subtask = subtasks.get(subtaskId);
-                if (subtask != null) {
-                    result.add(subtask);
-                }
-            }
+        if (epic == null) {
+            return null;
         }
-        return result;
+        return epic.getSubtaskIds().stream()
+                .map(subtasks::get)
+                .filter(Objects::nonNull)
+                .toList();
     }
 
     private void updateEpicStatus(int epicId) {

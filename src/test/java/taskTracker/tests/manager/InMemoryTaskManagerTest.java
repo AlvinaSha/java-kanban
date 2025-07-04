@@ -1,13 +1,20 @@
-package taskTracker.tests;
+package taskTracker.tests.manager;
 
-import taskTracker.model.*;
-import taskTracker.manager.task.TaskManager;
-import taskTracker.manager.Managers;
+import taskTracker.manager.task.InMemoryTaskManager;
+import taskTracker.model.Task;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 public class InMemoryTaskManagerTest {
-    private final TaskManager taskManager = Managers.getDefault();
+    private InMemoryTaskManager taskManager;
+
+    @BeforeEach
+    void setUp(){
+        taskManager = new InMemoryTaskManager();
+    }
 
     @Test
     void addTask_shouldSaveAndFindTaskById() {
@@ -20,7 +27,7 @@ public class InMemoryTaskManagerTest {
     @Test
     void addTaskWithGeneratedId_shouldNotConflictWithManualId() {
         Task task1 = new Task("Task 1", "Description", 1);
-        Task task2 = new Task("Task 2", "Description", 0); // id сгенерируется автоматически
+        Task task2 = new Task("Task 2", "Description", 1);
         taskManager.createTask(task1);
         taskManager.createTask(task2);
         assertNotEquals(task1.getId(), task2.getId(), "Автоматический и ручной id не должны конфликтовать.");

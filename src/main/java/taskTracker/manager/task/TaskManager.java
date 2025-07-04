@@ -8,6 +8,8 @@ import java.util.List;
 
 public interface TaskManager {
 
+    List<Task> getHistory();
+
     List<Task> getAllTasks();
 
     void deleteAllTasks();

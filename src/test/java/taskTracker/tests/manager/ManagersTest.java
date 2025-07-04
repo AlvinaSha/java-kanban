@@ -1,4 +1,4 @@
-package taskTracker.tests;
+package taskTracker.tests.manager;
 
 import taskTracker.manager.Managers;
 import taskTracker.manager.task.TaskManager;
