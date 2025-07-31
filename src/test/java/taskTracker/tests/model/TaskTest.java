@@ -1,4 +1,4 @@
-package taskTracker.tests.model;
+package tasktracker.tests.model;
 
 import taskTracker.model.Task;
 import org.junit.jupiter.api.Test;

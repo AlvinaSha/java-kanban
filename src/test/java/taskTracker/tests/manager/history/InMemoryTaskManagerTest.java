@@ -1,4 +1,4 @@
-package taskTracker.tests.manager.history;
+package tasktracker.tests.manager.history;
 
 import taskTracker.manager.task.InMemoryTaskManager;
 import taskTracker.model.Epic;
