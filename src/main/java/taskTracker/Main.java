@@ -1,12 +1,12 @@
-package taskTracker;
+package tasktracker;
 
-import taskTracker.manager.history.HistoryManager;
-import taskTracker.manager.history.InMemoryHistoryManager;
-import taskTracker.manager.task.InMemoryTaskManager;
-import taskTracker.model.Epic;
-import taskTracker.model.Status;
-import taskTracker.model.Subtask;
-import taskTracker.model.Task;
+import tasktracker.manager.history.HistoryManager;
+import tasktracker.manager.history.InMemoryHistoryManager;
+import tasktracker.manager.task.InMemoryTaskManager;
+import tasktracker.model.Epic;
+import tasktracker.model.Status;
+import tasktracker.model.Subtask;
+import tasktracker.model.Task;
 
 import java.util.List;
 import java.util.Scanner;

@@ -1,7 +1,7 @@
-package taskTracker.manager.history;
+package tasktracker.manager.history;
 
-import taskTracker.manager.history.list.TaskHistoryLinkedList;
-import taskTracker.model.Task;
+import tasktracker.manager.history.list.TaskHistoryLinkedList;
+import tasktracker.model.Task;
 
 import java.util.LinkedList;
 import java.util.List;

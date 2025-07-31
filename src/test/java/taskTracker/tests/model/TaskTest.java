@@ -1,6 +1,6 @@
 package tasktracker.tests.model;
 
-import taskTracker.model.Task;
+import tasktracker.model.Task;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

@@ -1,10 +1,10 @@
 package tasktracker.tests.manager.history;
 
-import taskTracker.manager.task.InMemoryTaskManager;
-import taskTracker.model.Epic;
-import taskTracker.model.Status;
-import taskTracker.model.Subtask;
-import taskTracker.model.Task;
+import tasktracker.manager.task.InMemoryTaskManager;
+import tasktracker.model.Epic;
+import tasktracker.model.Status;
+import tasktracker.model.Subtask;
+import tasktracker.model.Task;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

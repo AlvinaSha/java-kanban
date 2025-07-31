@@ -1,6 +1,6 @@
-package taskTracker.manager.history.list;
+package tasktracker.manager.history.list;
 
-import taskTracker.model.Task;
+import tasktracker.model.Task;
 
 import java.util.ArrayList;
 import java.util.HashMap;
