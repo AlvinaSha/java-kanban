@@ -12,7 +12,7 @@ public class HistoryManagerTest {
     private InMemoryHistoryManager historyManager;
 
     @BeforeEach
-    void setUp(){
+    void setUp() {
         historyManager = new InMemoryHistoryManager();
     }
 
