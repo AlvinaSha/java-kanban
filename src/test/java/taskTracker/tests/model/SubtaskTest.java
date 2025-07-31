@@ -1,7 +1,7 @@
-package taskTracker.tests.model;
+package tasktracker.tests.model;
 
-import taskTracker.model.Epic;
-import taskTracker.model.Subtask;
+import tasktracker.model.Epic;
+import tasktracker.model.Subtask;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

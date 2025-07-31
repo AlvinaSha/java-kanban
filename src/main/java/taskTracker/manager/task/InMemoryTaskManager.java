@@ -1,11 +1,11 @@
-package taskTracker.manager.task;
+package tasktracker.manager.task;
 
-import taskTracker.manager.history.HistoryManager;
-import taskTracker.manager.history.InMemoryHistoryManager;
-import taskTracker.model.Status;
-import taskTracker.model.Epic;
-import taskTracker.model.Subtask;
-import taskTracker.model.Task;
+import tasktracker.manager.history.HistoryManager;
+import tasktracker.manager.history.InMemoryHistoryManager;
+import tasktracker.model.Status;
+import tasktracker.model.Epic;
+import tasktracker.model.Subtask;
+import tasktracker.model.Task;
 
 import java.util.*;
 
@@ -79,6 +79,7 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void deleteTaskById(int id) {
         tasks.remove(id);
+        historyManager.remove(id);
     }
 
     @Override
@@ -126,8 +127,10 @@ public class InMemoryTaskManager implements TaskManager {
         if (epic != null) {
             for (int subtaskId : epic.getSubtaskIds()) {
                 subtasks.remove(subtaskId);
+                historyManager.remove(subtaskId);
             }
             epics.remove(id);
+            historyManager.remove(id);
         }
     }
 
@@ -211,6 +214,7 @@ public class InMemoryTaskManager implements TaskManager {
                 updateEpicStatus(epicId);
             }
             subtasks.remove(id);
+            historyManager.remove(id);
         }
     }
 
