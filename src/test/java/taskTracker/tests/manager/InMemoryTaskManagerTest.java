@@ -1,7 +1,7 @@
-package taskTracker.tests.manager;
+package tasktracker.tests.manager;
 
-import taskTracker.manager.task.InMemoryTaskManager;
-import taskTracker.model.Task;
+import tasktracker.manager.task.InMemoryTaskManager;
+import tasktracker.model.Task;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
