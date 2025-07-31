@@ -2,8 +2,6 @@ package tasktracker.manager.history;
 
 import tasktracker.manager.history.list.TaskHistoryLinkedList;
 import tasktracker.model.Task;
-
-import java.util.LinkedList;
 import java.util.List;
 
 public class InMemoryHistoryManager implements HistoryManager {
