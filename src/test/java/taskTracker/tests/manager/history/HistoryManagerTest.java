@@ -1,4 +1,4 @@
-package taskTracker.tests.manager;
+package taskTracker.tests.manager.history;
 
 import taskTracker.manager.history.InMemoryHistoryManager;
 import taskTracker.model.Task;
