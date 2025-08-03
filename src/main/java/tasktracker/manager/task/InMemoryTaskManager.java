@@ -35,7 +35,6 @@ public class InMemoryTaskManager implements TaskManager {
     private void addToHistory(Task task) {
         historyManager.add(task);
     }
-
     @Override
     public List<Task> getHistory() {
         return historyManager.getHistory();

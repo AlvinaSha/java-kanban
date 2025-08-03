@@ -28,7 +28,7 @@ public class SubtaskTest {
     void setId_notSetId_idSameWithEpicId() {
 
         Epic epic = new Epic("Epic", "Description", 1);
-        Subtask subtask = new Subtask("Subtask", "Description", 2, 1); // epicId = 1
+        Subtask subtask = new Subtask("Subtask", "Description", 2, 1);
 
         subtask.setId(1);
 
