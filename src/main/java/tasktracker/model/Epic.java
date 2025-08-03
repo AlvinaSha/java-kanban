@@ -1,4 +1,4 @@
-package taskTracker.model;
+package tasktracker.model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +16,7 @@ public class Epic extends Task {
     }
 
     public void addSubtaskId(int subtaskId) {
-        if(this.getId() == subtaskId){
+        if (this.getId() == subtaskId) {
             System.out.println("Нельзя добавить подзадачу, у которой id совпадает с id эпика");
             return;
         }

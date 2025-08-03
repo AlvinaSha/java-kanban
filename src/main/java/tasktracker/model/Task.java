@@ -1,4 +1,4 @@
-package taskTracker.model;
+package tasktracker.model;
 
 public class Task {
     private String name;
