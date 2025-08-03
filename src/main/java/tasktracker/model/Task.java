@@ -1,4 +1,4 @@
-package taskTracker.model;
+package tasktracker.model;
 
 public class Task {
     private String name;
@@ -11,6 +11,13 @@ public class Task {
         this.description = description;
         this.id = id;
         this.status = Status.NEW;
+    }
+
+    public Task(Task task) {
+        this.name = task.getName();
+        this.description = task.getDescription();
+        this.id = task.getId();
+        this.status = task.getStatus();
     }
 
     public String getName() {
