@@ -13,36 +13,40 @@ public class TaskHistoryLinkedList {
     private Node<Task> head;
     private Node<Task> tail;
 
+    public void remove(int id) {
+        removeNode(table.get(id));
+    }
+
     public void linkLast(Task task) {
         Node<Task> newNode = new Node<>(null, tail, task);
         removeNode(table.get(task.getId()));
         if (tail == null) {
             head = newNode;
         } else {
-            tail.next = newNode;
+            tail.setNext(newNode);
         }
 
         tail = newNode;
         table.put(task.getId(),newNode);
     }
 
-    public void removeNode(Node<Task> node) {
+    private void removeNode(Node<Task> node) {
         if (node != null) {
-            final Node<Task> prev = node.prev;
-            final Node<Task> next = node.next;
-            table.remove(node.data.getId());
+            final Node<Task> prev = node.getPrev();
+            final Node<Task> next = node.getNext();
+            table.remove(node.getData().getId());
             if (prev == null && next == null) {
                 head = null;
                 tail = null;
             } else if (next == null) {
                 tail = prev;
-                tail.next = null;
+                tail.setNext(null);
             } else if (prev == null) {
                 head = next;
-                head.prev = null;
+                head.setPrev(null);
             } else {
-                prev.next = next;
-                next.prev = prev;
+                prev.setNext(next);
+                next.setPrev(prev);
             }
         }
     }
@@ -51,8 +55,8 @@ public class TaskHistoryLinkedList {
         List<Task> tasks = new ArrayList<>(table.size());
         Node<Task> node = head;
         while (node != null) {
-            tasks.add(node.data);
-            node = node.next;
+            tasks.add(node.getData());
+            node = node.getNext();
         }
         return tasks;
     }
