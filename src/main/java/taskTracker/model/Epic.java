@@ -1,4 +1,4 @@
-package taskTracker.model;
+package tasktracker.model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,6 +9,10 @@ public class Epic extends Task {
     public Epic(String name, String description, int id) {
         super(name, description, id);
         this.subtaskIds = new ArrayList<>();
+    }
+
+    public Epic(int id, String name, String description, Status status) {
+        super(id, name, description, status);
     }
 
     public List<Integer> getSubtaskIds() {
@@ -36,6 +40,11 @@ public class Epic extends Task {
                 ", status=" + getStatus() +
                 ", subtaskIds=" + subtaskIds +
                 '}';
+    }
+
+    @Override
+    public TaskType getType() {
+        return TaskType.EPIC;
     }
 }
 

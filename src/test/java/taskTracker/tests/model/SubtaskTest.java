@@ -1,7 +1,7 @@
-package taskTracker.tests.model;
+package tasktracker.tests.model;
 
-import taskTracker.model.Epic;
-import taskTracker.model.Subtask;
+import tasktracker.model.Epic;
+import tasktracker.model.Subtask;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -28,7 +28,7 @@ public class SubtaskTest {
     void setId_notSetId_idSameWithEpicId() {
 
         Epic epic = new Epic("Epic", "Description", 1);
-        Subtask subtask = new Subtask("Subtask", "Description", 2, 1); // epicId = 1
+        Subtask subtask = new Subtask("Subtask", "Description", 2, 1);
 
         subtask.setId(1);
 

@@ -1,4 +1,4 @@
-package taskTracker.model;
+package tasktracker.model;
 
 public class Task {
     private String name;
@@ -19,6 +19,14 @@ public class Task {
         this.id = task.getId();
         this.status = task.getStatus();
     }
+
+    public Task(int id, String name, String description, Status status) {
+        this.name = name;
+        this.description = description;
+        this.id = id;
+        this.status = status;
+    }
+
 
     public String getName() {
         return name;
@@ -73,5 +81,9 @@ public class Task {
     @Override
     public int hashCode() {
         return id;
+    }
+
+    public TaskType getType() {
+        return TaskType.TASK;
     }
 }
