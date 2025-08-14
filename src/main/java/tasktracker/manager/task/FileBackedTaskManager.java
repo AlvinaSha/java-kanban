@@ -8,28 +8,25 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-import static tasktracker.model.TaskType.*;
-
 public class FileBackedTaskManager extends InMemoryTaskManager {
-    private Path path;
-    private static final String CSV_HEADER = "id,type,name,status,description,epic\n";
+    private final Path path;
 
     public FileBackedTaskManager(String path) {
         super();
         this.path = Path.of(path);
     }
 
-    private void save() {
+    public void save() {
         try {
-            StringBuilder content = new StringBuilder(CSV_HEADER);
+            StringBuilder content = new StringBuilder(CsvConverter.CSV_HEADER);
 
-            getAllTasks().forEach(task -> content.append(toString(task)));
-            getAllEpics().forEach(epic -> content.append(toString(epic)));
-            getAllSubtasks().forEach(subtask -> content.append(toString(subtask)));
+            getAllTasks().forEach(task -> content.append(CsvConverter.toString(task)));
+            getAllEpics().forEach(epic -> content.append(CsvConverter.toString(epic)));
+            getAllSubtasks().forEach(subtask -> content.append(CsvConverter.toString(subtask)));
 
             Files.writeString(path, content.toString());
         } catch (IOException e) {
-            throw new ManagerSaveException("Ошибка сохранения файла", e);
+            throw new ManagerSaveException("Ошибка сохранения файла");
         }
     }
 
@@ -41,17 +38,30 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
             String[] lines = content.split("\n");
 
             for (int i = 1; i < lines.length; i++) {
-                Task task = fromString(lines[i]);
+                Task task = CsvConverter.fromString(lines[i]);
                 if (task == null) continue;
 
-                switch (task.getType()) {
-                    case TASK -> createTask(task);
-                    case EPIC -> createEpic((Epic) task);
-                    case SUBTASK -> createSubtask((Subtask) task);
+                if (!(task instanceof Subtask) && !(task instanceof Epic)) {
+                    getTasks().put(task.getId(), task);
+                } else if (task instanceof Epic) {
+                    getEpics().put(task.getId(), (Epic) task);
+                } else {
+                    getSubtasks().put(task.getId(), (Subtask) task);
+                    Epic epic = getEpics().get(((Subtask) task).getEpicId());
+                    if (epic != null) {
+                        epic.addSubtaskId(task.getId());
+                    }
                 }
+                updateNextId(task.getId());
             }
         } catch (IOException e) {
-            throw new ManagerSaveException("Ошибка загрузки файла", e);
+            throw new ManagerSaveException("Ошибка загрузки файла");
+        }
+    }
+
+    private void updateNextId(int id) {
+        if (id >= this.getNextId()) {
+            this.setNextId(id + 1);
         }
     }
 
@@ -61,7 +71,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         return manager;
     }
 
-    private String toString(Task task) {
+    private String generateToString(Task task) {
         return String.format("%d,%s,%s,%s,%s,%s\n",
                 task.getId(),
                 task.getType(),
@@ -80,7 +90,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         String name = parts[2];
         Status status = Status.valueOf(parts[3]);
         String description = parts[4];
-        String epicId = parts.length > 5 ? parts[5] : "";
+        String epicId = parts[5];
 
         return switch (type) {
             case TASK -> new Task(id, name, description, status);
@@ -99,14 +109,44 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
     @Override
     public Task createTask(Task task) {
+        Task createdTask = super.createTask(task);
         save();
-        return super.createTask(task);
+        return createdTask;
+    }
+
+    @Override
+    public Epic createEpic(Epic epic) {
+        Epic createdEpic = super.createEpic(epic);
+        save();
+        return createdEpic;
+    }
+
+    @Override
+    public Subtask createSubtask(Subtask subtask) {
+        Subtask createdSubtask = super.createSubtask(subtask);
+        save();
+        return createdSubtask;
     }
 
     @Override
     public Task updateTask(Task task) {
+        Task updatedTask = super.updateTask(task);
         save();
-        return super.updateTask(task);
+        return updatedTask;
+    }
+
+    @Override
+    public Epic updateEpic(Epic epic) {
+        Epic updatedEpic = super.updateEpic(epic);
+        save();
+        return updatedEpic;
+    }
+
+    @Override
+    public Subtask updateSubtask(Subtask subtask) {
+        Subtask updatedSubtask = super.updateSubtask(subtask);
+        save();
+        return updatedSubtask;
     }
 
     @Override
@@ -116,50 +156,20 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     @Override
-    public void deleteAllEpics() {
-        super.deleteAllEpics();
-        save();
-    }
-
-    @Override
-    public Epic createEpic(Epic epic) {
-        save();
-        return super.createEpic(epic);
-    }
-
-    @Override
-    public Epic updateEpic(Epic epic) {
-        save();
-        return super.updateEpic(epic);
-    }
-
-    @Override
     public void deleteEpicById(int id) {
         super.deleteEpicById(id);
         save();
     }
 
     @Override
-    public void deleteAllSubtasks() {
-        super.deleteAllSubtasks();
-        save();
-    }
-
-    @Override
-    public Subtask createSubtask(Subtask subtask) {
-        save();
-        return super.createSubtask(subtask);
-    }
-
-    @Override
-    public Subtask updateSubtask(Subtask subtask) {
-        save();
-        return super.updateSubtask(subtask);
-    }
-
-    @Override
     public void deleteSubtaskById(int id) {
         super.deleteSubtaskById(id);
+        save();
+    }
+
+    @Override
+    public void deleteAllEpics() {
+        super.deleteAllEpics();
         save();
     }
 }
