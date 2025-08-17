@@ -41,16 +41,21 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                 Task task = CsvConverter.fromString(lines[i]);
                 if (task == null) continue;
 
-                if (!(task instanceof Subtask) && !(task instanceof Epic)) {
-                    getTasks().put(task.getId(), task);
-                } else if (task instanceof Epic) {
-                    getEpics().put(task.getId(), (Epic) task);
-                } else {
-                    getSubtasks().put(task.getId(), (Subtask) task);
-                    Epic epic = getEpics().get(((Subtask) task).getEpicId());
-                    if (epic != null) {
-                        epic.addSubtaskId(task.getId());
-                    }
+                switch (task.getType()) {
+                    case TASK:
+                        getTasks().put(task.getId(), task);
+                        break;
+                    case EPIC:
+                        getEpics().put(task.getId(), (Epic) task);
+                        break;
+                    case SUBTASK:
+                        Subtask subtask = (Subtask) task;
+                        getSubtasks().put(subtask.getId(), subtask);
+                        Epic epic = getEpics().get(subtask.getEpicId());
+                        if (epic != null) {
+                            epic.addSubtaskId(subtask.getId());
+                        }
+                        break;
                 }
                 updateNextId(task.getId());
             }
@@ -70,36 +75,6 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         manager.load();
         return manager;
     }
-
-    private String generateToString(Task task) {
-        return String.format("%d,%s,%s,%s,%s,%s\n",
-                task.getId(),
-                task.getType(),
-                task.getName(),
-                task.getStatus(),
-                task.getDescription(),
-                (task instanceof Subtask) ? ((Subtask) task).getEpicId() : "");
-    }
-
-    private Task fromString(String value) {
-        String[] parts = value.split(",");
-        if (parts.length < 6) return null;
-
-        int id = Integer.parseInt(parts[0]);
-        TaskType type = TaskType.valueOf(parts[1]);
-        String name = parts[2];
-        Status status = Status.valueOf(parts[3]);
-        String description = parts[4];
-        String epicId = parts[5];
-
-        return switch (type) {
-            case TASK -> new Task(id, name, description, status);
-            case EPIC -> new Epic(id, name, description, status);
-            case SUBTASK -> new Subtask(id, name, description, status,
-                    epicId.isEmpty() ? 0 : Integer.parseInt(epicId));
-        };
-    }
-
 
     @Override
     public void deleteAllTasks() {

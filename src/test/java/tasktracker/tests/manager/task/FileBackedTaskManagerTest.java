@@ -3,6 +3,7 @@ package tasktracker.tests.manager.task;
 import tasktracker.manager.task.FileBackedTaskManager;
 import tasktracker.model.Status;
 import tasktracker.model.Task;
+import tasktracker.tests.manager.history.InMemoryTaskManagerTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -12,20 +13,18 @@ import java.nio.file.Files;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class FileBackedTaskManagerTest {
+public class FileBackedTaskManagerTest extends InMemoryTaskManagerTest {
     private File tempFile;
-    private FileBackedTaskManager manager;
 
     @BeforeEach
     void setUp() throws IOException {
         tempFile = File.createTempFile("tasks", ".csv");
         tempFile.deleteOnExit();
-        manager = new FileBackedTaskManager(tempFile.getPath());
+        taskManager = new FileBackedTaskManager(tempFile.getPath());
     }
 
     @Test
     void saveAndLoad_shouldHandleEmptyManager() {
-        manager.save();
         FileBackedTaskManager loadedManager = FileBackedTaskManager.loadFromFile(tempFile);
 
         assertAll(
@@ -38,7 +37,7 @@ public class FileBackedTaskManagerTest {
     @Test
     void save_shouldStoreTaskWithCorrectFormat() throws IOException {
         Task task = new Task(1, "Test Task", "Description", Status.NEW);
-        manager.createTask(task);
+        taskManager.createTask(task);
 
         String fileContent = Files.readString(tempFile.toPath());
         assertTrue(fileContent.contains("1,TASK,Test Task,NEW,Description,"));
@@ -53,5 +52,5 @@ public class FileBackedTaskManagerTest {
         assertTrue(loadedManager.getAllTasks().isEmpty());
     }
 
-    
+
 }

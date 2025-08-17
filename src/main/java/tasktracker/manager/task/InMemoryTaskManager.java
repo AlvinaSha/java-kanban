@@ -16,23 +16,23 @@ public class InMemoryTaskManager implements TaskManager {
     private int nextId;
     private final HistoryManager historyManager;
 
-    public void setNextId(int nextId) {
+    protected void setNextId(int nextId) {
         this.nextId = nextId;
     }
 
-    public Map<Integer, Task> getTasks() {
+    protected Map<Integer, Task> getTasks() {
         return tasks;
     }
 
-    public Map<Integer, Epic> getEpics() {
+    protected Map<Integer, Epic> getEpics() {
         return epics;
     }
 
-    public Map<Integer, Subtask> getSubtasks() {
+    protected Map<Integer, Subtask> getSubtasks() {
         return subtasks;
     }
 
-    public int getNextId() {
+    protected int getNextId() {
         return nextId;
     }
 

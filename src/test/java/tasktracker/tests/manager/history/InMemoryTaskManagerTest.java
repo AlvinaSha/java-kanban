@@ -1,6 +1,7 @@
 package tasktracker.tests.manager.history;
 
 import tasktracker.manager.task.InMemoryTaskManager;
+import tasktracker.manager.task.TaskManager;
 import tasktracker.model.Epic;
 import tasktracker.model.Status;
 import tasktracker.model.Subtask;
@@ -11,10 +12,10 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class InMemoryTaskManagerTest {
-    private InMemoryTaskManager taskManager;
+    protected TaskManager taskManager;
 
     @BeforeEach
-    void setUp() {
+    void setUp(){
         taskManager = new InMemoryTaskManager();
     }
 
