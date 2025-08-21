@@ -4,11 +4,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Epic extends Task {
-    private List<Integer> subtaskIds;
+    private final List<Integer> subtaskIds =  new ArrayList<>();
 
     public Epic(String name, String description, int id) {
         super(name, description, id);
-        this.subtaskIds = new ArrayList<>();
+    }
+
+    public Epic(int id, String name, String description, Status status) {
+        super(id, name, description, status);
+    }
+
+    public Epic(int id, String name, String description) {
+        this(id, name, description, Status.NEW);
     }
 
     public List<Integer> getSubtaskIds() {
@@ -16,7 +23,7 @@ public class Epic extends Task {
     }
 
     public void addSubtaskId(int subtaskId) {
-        if (this.getId() == subtaskId) {
+        if(this.getId() == subtaskId){
             System.out.println("Нельзя добавить подзадачу, у которой id совпадает с id эпика");
             return;
         }
@@ -36,6 +43,11 @@ public class Epic extends Task {
                 ", status=" + getStatus() +
                 ", subtaskIds=" + subtaskIds +
                 '}';
+    }
+
+    @Override
+    public TaskType getType() {
+        return TaskType.EPIC;
     }
 }
 
