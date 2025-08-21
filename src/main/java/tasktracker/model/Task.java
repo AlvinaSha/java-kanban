@@ -1,16 +1,31 @@
 package tasktracker.model;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+
 public class Task {
     private String name;
     private String description;
     private int id;
     private Status status;
+    private Duration duration;
+    private LocalDateTime startTime;
 
     public Task(String name, String description, int id) {
         this.name = name;
         this.description = description;
         this.id = id;
         this.status = Status.NEW;
+    }
+
+    public Task(int id, String name, String description, Status status,
+                Duration duration, LocalDateTime startTime) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.status = status;
+        this.duration = duration;
+        this.startTime = startTime;
     }
 
     public Task(Task task) {
@@ -64,6 +79,29 @@ public class Task {
         this.status = status;
     }
 
+    public Duration getDuration() {
+        return duration;
+    }
+
+    public void setDuration(Duration duration) {
+        this.duration = duration;
+    }
+
+    public LocalDateTime getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(LocalDateTime startTime) {
+        this.startTime = startTime;
+    }
+
+    public LocalDateTime getEndTime() {
+        if (startTime == null || duration == null) {
+            return null;
+        }
+        return startTime.plus(duration);
+    }
+
     @Override
     public String toString() {
         return "Task{" +
@@ -71,7 +109,20 @@ public class Task {
                 ", description='" + description + '\'' +
                 ", id=" + id +
                 ", status=" + status +
+                ", duration=" + duration +
+                ", startTime=" + startTime +
+                ", endTime=" + getEndTime() +
                 '}';
+    }
+
+    public boolean isOverlapping(Task other) {
+        if (this.getStartTime() == null || this.getEndTime() == null ||
+                other.getStartTime() == null || other.getEndTime() == null) {
+            return false;
+        }
+
+        return !this.getEndTime().isBefore(other.getStartTime()) &&
+                !this.getStartTime().isAfter(other.getEndTime());
     }
 
     @Override
