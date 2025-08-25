@@ -115,16 +115,6 @@ public class Task {
                 '}';
     }
 
-    public boolean isOverlapping(Task other) {
-        if (this.getStartTime() == null || this.getEndTime() == null ||
-                other.getStartTime() == null || other.getEndTime() == null) {
-            return false;
-        }
-
-        return !this.getEndTime().isBefore(other.getStartTime()) &&
-                !this.getStartTime().isAfter(other.getEndTime());
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

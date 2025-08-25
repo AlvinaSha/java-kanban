@@ -4,7 +4,6 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class Epic extends Task {
     private final List<Integer> subtaskIds =  new ArrayList<>();
@@ -41,36 +40,6 @@ public class Epic extends Task {
         subtaskIds.remove(Integer.valueOf(subtaskId));
     }
 
-    public void updateTimings(List<Subtask> subtasks) {
-        if (subtasks == null || subtasks.isEmpty()) {
-            setDuration(null);
-            setStartTime(null);
-            endTime = null;
-            return;
-        }
-
-        LocalDateTime earliestStart = subtasks.stream()
-                .map(Subtask::getStartTime)
-                .filter(Objects::nonNull)
-                .min(LocalDateTime::compareTo)
-                .orElse(null);
-
-        LocalDateTime latestEnd = subtasks.stream()
-                .map(Subtask::getEndTime)
-                .filter(Objects::nonNull)
-                .max(LocalDateTime::compareTo)
-                .orElse(null);
-
-        Duration totalDuration = subtasks.stream()
-                .map(Subtask::getDuration)
-                .filter(Objects::nonNull)
-                .reduce(Duration.ZERO, Duration::plus);
-
-        setStartTime(earliestStart);
-        setDuration(totalDuration);
-        endTime = latestEnd;
-    }
-
     public void setEndTime(LocalDateTime endTime) {
         this.endTime = endTime;
     }
@@ -93,19 +62,5 @@ public class Epic extends Task {
         return TaskType.EPIC;
     }
 
-    @Override
-    public LocalDateTime getStartTime() {
-        return null;
-    }
-
-    @Override
-    public Duration getDuration() {
-        return null;
-    }
-
-    @Override
-    public LocalDateTime getEndTime() {
-        return null;
-    }
 }
 
