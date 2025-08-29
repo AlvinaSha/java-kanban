@@ -1,7 +1,16 @@
 package tasktracker.model;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+
 public class Subtask extends Task {
     private int epicId;
+
+    public Subtask(int id, String name, String description, Status status, int epicId,
+                   Duration duration, LocalDateTime startTime) {
+        super(id, name, description, status, duration, startTime);
+        this.epicId = epicId;
+    }
 
     public Subtask(String name, String description, int id, int epicId) {
         super(name, description, id);
@@ -9,7 +18,7 @@ public class Subtask extends Task {
     }
 
     public Subtask(int id, String name, String description, Status status, int epicId) {
-        super(id, name, description, status);
+        super(id, name, description, status, null, null);
         this.epicId = epicId;
     }
 

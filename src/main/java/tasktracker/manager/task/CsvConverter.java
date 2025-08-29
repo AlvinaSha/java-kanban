@@ -2,6 +2,8 @@ package tasktracker.manager.task;
 
 import tasktracker.model.*;
 
+import java.time.format.DateTimeFormatter;
+
 public class CsvConverter {
     public static final String CSV_HEADER = "id,type,name,status,description,epic\n";
     private static final String TASK_FORMAT = "%d,%s,%s,%s,%s,%s\n";
@@ -13,6 +15,8 @@ public class CsvConverter {
                 task.getName(),
                 task.getStatus(),
                 task.getDescription(),
+                task.getDuration() != null ? task.getDuration().toMinutes() : "",
+                task.getStartTime() != null ? task.getStartTime().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME) : "",
                 "");
     }
 
@@ -23,7 +27,10 @@ public class CsvConverter {
                 subtask.getName(),
                 subtask.getStatus(),
                 subtask.getDescription(),
-                subtask.getEpicId());
+                subtask.getEpicId(),
+                subtask.getDuration() != null ? subtask.getDuration().toMinutes() : "",
+                subtask.getStartTime() != null ? subtask.getStartTime().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME) : ""
+        );
     }
 
 
