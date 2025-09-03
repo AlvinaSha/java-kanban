@@ -20,7 +20,7 @@ public class PrioritizedHandler extends BaseHttpHandler {
             List<Task> prioritized = taskManager.getPrioritizedTasks();
             sendSuccess(exchange, prioritized);
         } else {
-            sendNotFound(exchange);
+            sendNotAllowed(exchange);
         }
     }
 }

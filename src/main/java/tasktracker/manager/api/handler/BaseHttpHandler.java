@@ -31,8 +31,8 @@ public abstract class BaseHttpHandler implements HttpHandler {
         exchange.sendResponseHeaders(201, -1);
     }
 
-    protected void sendNotFound(HttpExchange exchange) throws IOException {
-        exchange.sendResponseHeaders(404, -1);
+    protected void sendNotAllowed(HttpExchange exchange) throws IOException {
+        exchange.sendResponseHeaders(405, -1);
     }
 
     protected void sendNotAcceptable(HttpExchange exchange) throws IOException {

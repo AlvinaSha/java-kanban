@@ -30,10 +30,10 @@ public class SubtasksHandler extends BaseHttpHandler {
                     handleDelete(exchange);
                     break;
                 default:
-                    sendNotFound(exchange);
+                    sendNotAllowed(exchange);
             }
         } catch (NotFoundException e) {
-            sendNotFound(exchange);
+            sendNotAllowed(exchange);
         } catch (TimeConflictException e) {
             sendNotAcceptable(exchange);
         } catch (Exception e) {

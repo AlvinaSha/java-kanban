@@ -20,7 +20,7 @@ public class HistoryHandler extends BaseHttpHandler {
             List<Task> history = taskManager.getHistory();
             sendSuccess(exchange, history);
         } else {
-            sendNotFound(exchange);
+            sendNotAllowed(exchange);
         }
     }
 }

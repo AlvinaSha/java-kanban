@@ -30,10 +30,10 @@ public class EpicsHandler extends BaseHttpHandler {
                     handleDelete(exchange);
                     break;
                 default:
-                    sendNotFound(exchange);
+                    sendNotAllowed(exchange);
             }
         } catch (NotFoundException e) {
-            sendNotFound(exchange);
+            sendNotAllowed(exchange);
         } catch (Exception e) {
             sendInternalError(exchange);
         }
@@ -63,7 +63,7 @@ public class EpicsHandler extends BaseHttpHandler {
             List<Subtask> subtasks = taskManager.getSubtasksByEpicId(epicId);
             sendSuccess(exchange, subtasks);
         } else {
-            sendNotFound(exchange);
+            sendNotAllowed(exchange);
         }
     }
 

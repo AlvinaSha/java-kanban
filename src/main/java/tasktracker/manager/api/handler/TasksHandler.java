@@ -28,7 +28,7 @@ public class TasksHandler extends BaseHttpHandler {
                     handleDelete(exchange);
                     break;
                 default:
-                    sendNotFound(exchange);
+                    sendNotAllowed(exchange);
             }
         } catch (Exception e) {
             sendInternalError(exchange);
@@ -48,10 +48,10 @@ public class TasksHandler extends BaseHttpHandler {
                 if (task != null) {
                     sendSuccess(exchange, task);
                 } else {
-                    sendNotFound(exchange);
+                    sendNotAllowed(exchange);
                 }
             } else {
-                sendNotFound(exchange);
+                sendNotAllowed(exchange);
             }
         }
     }
@@ -66,7 +66,7 @@ public class TasksHandler extends BaseHttpHandler {
             if (updated != null) {
                 sendSuccess(exchange, updated);
             } else {
-                sendNotFound(exchange);
+                sendNotAllowed(exchange);
             }
         }
     }
@@ -83,7 +83,7 @@ public class TasksHandler extends BaseHttpHandler {
                 taskManager.deleteTaskById(id);
                 sendCreated(exchange);
             } else {
-                sendNotFound(exchange);
+                sendNotAllowed(exchange);
             }
         }
     }
