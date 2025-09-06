@@ -1,6 +1,8 @@
 package tasktracker.tests.manager.task;
 
 import tasktracker.manager.task.FileBackedTaskManager;
+import tasktracker.manager.task.InMemoryTaskManager;
+import tasktracker.model.Epic;
 import tasktracker.model.Status;
 import tasktracker.model.Task;
 import tasktracker.tests.manager.history.InMemoryTaskManagerTest;
@@ -13,7 +15,7 @@ import java.nio.file.Files;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class FileBackedTaskManagerTest extends InMemoryTaskManagerTest {
+public class FileBackedTaskManagerTest extends TaskManagerTest<FileBackedTaskManager> {
     private File tempFile;
 
     @BeforeEach
@@ -51,6 +53,5 @@ public class FileBackedTaskManagerTest extends InMemoryTaskManagerTest {
         assertNotNull(loadedManager);
         assertTrue(loadedManager.getAllTasks().isEmpty());
     }
-
 
 }

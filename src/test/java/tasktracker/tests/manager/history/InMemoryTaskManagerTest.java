@@ -1,22 +1,30 @@
 package tasktracker.tests.manager.history;
 
 import tasktracker.manager.task.InMemoryTaskManager;
-import tasktracker.manager.task.TaskManager;
 import tasktracker.model.Epic;
 import tasktracker.model.Status;
 import tasktracker.model.Subtask;
 import tasktracker.model.Task;
+import tasktracker.tests.manager.task.TaskManagerTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class InMemoryTaskManagerTest {
-    protected TaskManager taskManager;
+public class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager> {
 
     @BeforeEach
-    void setUp(){
+    void setUp() {
         taskManager = new InMemoryTaskManager();
+    }
+
+    @Test
+    void inMemoryManager_shouldHandleLargeNumberOfTasks() {
+        for (int i = 1; i <= 1000; i++) {
+            Task task = new Task(i, "Task " + i, "Description", Status.NEW);
+            taskManager.createTask(task);
+        }
+        assertEquals(1000, taskManager.getAllTasks().size());
     }
 
     @Test
@@ -47,14 +55,14 @@ public class InMemoryTaskManagerTest {
 
     @Test
     void createEpic_shouldCalculateStatus() {
-        Epic epic = new Epic("Epic", "Description",1);
+        Epic epic = new Epic("Epic", "Description", 1);
         taskManager.createEpic(epic);
         assertEquals(Status.NEW, epic.getStatus(), "Новый эпик должен иметь статус NEW");
     }
 
     @Test
     void epicShouldNotContainItsOwnIdAsSubtask() {
-        Epic epic = new Epic("Epic", "Description",1);
+        Epic epic = new Epic("Epic", "Description", 1);
         taskManager.createEpic(epic);
 
         epic.addSubtaskId(epic.getId());
@@ -63,7 +71,7 @@ public class InMemoryTaskManagerTest {
 
     @Test
     void createSubtask_shouldLinkToEpic() {
-        Epic epic = new Epic("Epic", "Description",1);
+        Epic epic = new Epic("Epic", "Description", 1);
         taskManager.createEpic(epic);
 
         Subtask subtask = new Subtask("Subtask", "Description", 2, epic.getId());
@@ -74,7 +82,7 @@ public class InMemoryTaskManagerTest {
 
     @Test
     void subtaskShouldHaveValidEpicId() {
-        Epic epic = new Epic("Epic", "Description",1);
+        Epic epic = new Epic("Epic", "Description", 1);
         taskManager.createEpic(epic);
 
         Subtask subtask = new Subtask("Subtask", "Description", 2, epic.getId());
@@ -83,7 +91,7 @@ public class InMemoryTaskManagerTest {
 
     @Test
     void updateTaskStatus_shouldWorkCorrectly() {
-        Task task = new Task("Task", "Description",1);
+        Task task = new Task("Task", "Description", 1);
         taskManager.createTask(task);
 
         task.setStatus(Status.IN_PROGRESS);
@@ -94,10 +102,10 @@ public class InMemoryTaskManagerTest {
 
     @Test
     void updateSubtaskStatus_shouldUpdateEpicStatus() {
-        Epic epic = new Epic("Epic", "Description",1);
+        Epic epic = new Epic("Epic", "Description", 1);
         taskManager.createEpic(epic);
 
-        Subtask subtask = new Subtask("Subtask", "Description",2, epic.getId());
+        Subtask subtask = new Subtask("Subtask", "Description", 2, epic.getId());
         taskManager.createSubtask(subtask);
 
         subtask.setStatus(Status.DONE);
@@ -108,15 +116,15 @@ public class InMemoryTaskManagerTest {
 
     @Test
     void tasksWithSameId_shouldBeEqual() {
-        Task task1 = new Task("Task 1", "Description",1);
+        Task task1 = new Task("Task 1", "Description", 1);
         Task task2 = new Task(task1);
         assertEquals(task1, task2, "Задачи с одинаковым ID должны быть равны");
     }
 
     @Test
     void tasksWithDifferentIds_shouldNotBeEqual() {
-        Task task1 = new Task("Task 1", "Description",1);
-        Task task2 = new Task("Task 2", "Description",2);
+        Task task1 = new Task("Task 1", "Description", 1);
+        Task task2 = new Task("Task 2", "Description", 2);
         assertNotEquals(task1, task2, "Задачи с разными ID не должны быть равны");
     }
 }
