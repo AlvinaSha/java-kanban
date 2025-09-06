@@ -1,5 +1,7 @@
 package tasktracker.manager.task;
 
+import tasktracker.manager.exception.NotFoundException;
+import tasktracker.manager.exception.TimeConflictException;
 import tasktracker.model.Epic;
 import tasktracker.model.Subtask;
 import tasktracker.model.Task;
@@ -14,38 +16,39 @@ public interface TaskManager {
 
     void deleteAllTasks();
 
-    Task getTaskById(int id);
+    Task getTaskById(int id) throws NotFoundException;
 
     Task createTask(Task task);
 
-    Task updateTask(Task task);
+    Task updateTask(Task task) throws NotFoundException, TimeConflictException;
 
-    void deleteTaskById(int id);
+    void deleteTaskById(int id) throws NotFoundException;
 
     List<Epic> getAllEpics();
 
     void deleteAllEpics();
 
-    Epic getEpicById(int id);
+    Epic getEpicById(int id) throws NotFoundException   ;
 
     Epic createEpic(Epic epic);
 
-    Epic updateEpic(Epic epic);
+    Epic updateEpic(Epic epic) throws NotFoundException;
 
-    void deleteEpicById(int id);
+    void deleteEpicById(int id) throws NotFoundException;
 
     List<Subtask> getAllSubtasks();
 
     void deleteAllSubtasks();
 
-    Subtask getSubtaskById(int id);
+    Subtask getSubtaskById(int id) throws NotFoundException;
 
     Subtask createSubtask(Subtask subtask);
 
-    Subtask updateSubtask(Subtask subtask);
+    Subtask updateSubtask(Subtask subtask) throws NotFoundException, TimeConflictException;
 
-    void deleteSubtaskById(int id);
+    void deleteSubtaskById(int id) throws NotFoundException;
 
-    List<Subtask> getSubtasksByEpicId(int epicId);
+    List<Subtask> getSubtasksByEpicId(int epicId) throws NotFoundException;
 
+    List<Task> getPrioritizedTasks();
 }
