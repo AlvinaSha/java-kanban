@@ -48,6 +48,10 @@ public abstract class BaseHttpHandler implements HttpHandler {
         return new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
     }
 
+    protected void sendNotFound(HttpExchange exchange) throws IOException {
+        exchange.sendResponseHeaders(404, -1);
+    }
+
     protected <T> T readJson(HttpExchange exchange, Class<T> classOfT) throws IOException {
         String body = readText(exchange);
         return GSON.fromJson(body, classOfT);

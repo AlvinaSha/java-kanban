@@ -19,6 +19,13 @@ public class EpicsHandler extends BaseHttpHandler {
     @Override
     public void handle(HttpExchange exchange) throws IOException {
         try {
+            String path = exchange.getRequestURI().getPath();
+
+            if (!isPathSupported(path)) {
+                sendNotFound(exchange);
+                return;
+            }
+
             switch (exchange.getRequestMethod()) {
                 case "GET":
                     handleGet(exchange);
@@ -30,13 +37,19 @@ public class EpicsHandler extends BaseHttpHandler {
                     handleDelete(exchange);
                     break;
                 default:
-                    sendNotAllowed(exchange);
+                    sendNotAllowed(exchange); // 405 для неподдерживаемого метода
             }
         } catch (NotFoundException e) {
-            sendNotAllowed(exchange);
+            sendNotFound(exchange); // 404 если данные не найдены
         } catch (Exception e) {
             sendInternalError(exchange);
         }
+    }
+
+    private boolean isPathSupported(String path) {
+        return path.equals("/epics") ||
+                path.matches("/epics/\\d+") ||
+                path.matches("/epics/\\d+/subtasks");
     }
 
     private void handleGet(HttpExchange exchange) throws IOException, NotFoundException {
@@ -50,6 +63,9 @@ public class EpicsHandler extends BaseHttpHandler {
         } else {
             int id = extractIdFromPath(path);
             Epic epic = taskManager.getEpicById(id);
+            if (epic == null) {
+                throw new NotFoundException("Epic not found");
+            }
             sendSuccess(exchange, epic);
         }
     }
@@ -63,7 +79,7 @@ public class EpicsHandler extends BaseHttpHandler {
             List<Subtask> subtasks = taskManager.getSubtasksByEpicId(epicId);
             sendSuccess(exchange, subtasks);
         } else {
-            sendNotAllowed(exchange);
+            sendNotFound(exchange);
         }
     }
 
