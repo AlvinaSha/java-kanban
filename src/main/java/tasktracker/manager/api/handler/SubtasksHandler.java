@@ -19,6 +19,13 @@ public class SubtasksHandler extends BaseHttpHandler {
     @Override
     public void handle(HttpExchange exchange) throws IOException {
         try {
+            String path = exchange.getRequestURI().getPath();
+
+            if (!isPathSupported(path)) {
+                sendNotFound(exchange);
+                return;
+            }
+
             switch (exchange.getRequestMethod()) {
                 case "GET":
                     handleGet(exchange);
@@ -33,12 +40,14 @@ public class SubtasksHandler extends BaseHttpHandler {
                     sendNotAllowed(exchange);
             }
         } catch (NotFoundException e) {
-            sendNotAllowed(exchange);
-        } catch (TimeConflictException e) {
-            sendNotAcceptable(exchange);
+            sendNotFound(exchange);
         } catch (Exception e) {
             sendInternalError(exchange);
         }
+    }
+
+    private boolean isPathSupported(String path) {
+        return path.equals("/subtasks") || path.matches("/subtasks/\\d+");
     }
 
     private void handleGet(HttpExchange exchange) throws IOException, NotFoundException {
@@ -50,6 +59,9 @@ public class SubtasksHandler extends BaseHttpHandler {
         } else {
             int id = extractIdFromPath(path);
             Subtask subtask = taskManager.getSubtaskById(id);
+            if (subtask == null) {
+                throw new NotFoundException("Subtask not found");
+            }
             sendSuccess(exchange, subtask);
         }
     }
